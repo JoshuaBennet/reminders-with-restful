@@ -1,29 +1,31 @@
+import FontContext from "./FontContext";
 
-import {useState, useEffect} from 'react'
-import Reminder from "./Reminder";
 
-const RemindersList = () => {
-    const [reminders, setReminders] = useState([])
-
-    useEffect(() => {
-        fetch('http://localhost:4000/reminders')
-            .then((response) => {
-                return response.json()
-            }).then((responseBody) => {
-                const remindersFromApi = responseBody.data.reminders
-                setReminders(remindersFromApi)
-        })
-    }, [])
+const Reminder = (props) => {
+    const handleClick = () => {
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                done: !props.done // set it to the opposite of the current value
+            })
+        }
+        const requestUrl = 'http://localhost:4000/reminders/' + props.id
+        fetch(requestUrl, requestOptions)
+    }
 
     return (
-        <div className={'remindersList'}>
-            {reminders.map((reminder) => <Reminder
-                id={reminder.id}
-                title={reminder.title}
-                done={reminder.done}
-            />)}
-        </div>
+        <FontContext.Consumer>
+            {contextData => (
+                <div className={contextData.currentFont}>
+                    <input type="checkbox" onClick={handleClick} name={props.id} defaultChecked={props.done}/>
+                    <label form={props.id}>{props.title}</label>
+                </div>
+            )}
+        </FontContext.Consumer>
     )
 }
 
-export default RemindersList
+export default Reminder
