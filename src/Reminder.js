@@ -1,4 +1,6 @@
-// Reminder.js
+import FontContext from "./FontContext";
+
+
 const Reminder = (props) => {
     const handleClick = () => {
         const requestOptions = {
@@ -15,10 +17,14 @@ const Reminder = (props) => {
     }
 
     return (
-        <div>
-            <input type="checkbox" onClick={handleClick} name={props.id} defaultChecked={props.done}/>
-            <label for={props.id}>{props.title}</label>
-        </div>
+        <FontContext.Consumer>
+            {contextData => (
+                <div className={contextData.currentFont}>
+                    <input type="checkbox" onClick={handleClick} name={props.id} defaultChecked={props.done}/>
+                    <label form={props.id}>{props.title}</label>
+                </div>
+            )}
+        </FontContext.Consumer>
     )
 }
 

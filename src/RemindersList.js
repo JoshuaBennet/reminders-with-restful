@@ -17,7 +17,7 @@ const RemindersList = () => {
     return (
         <div className={'remindersList'}>
             {reminders.map((reminder) => <Reminder
-                id={reminder.id}
+                id={reminder._id}
                 title={reminder.title}
                 done={reminder.done}
             />)}
